@@ -5,6 +5,7 @@ websites = ["https://commoncore.hku.hk/science-technology-and-big-data/", "https
 
 def HuntCCs():
 
+    data = {}
     for ccArea in websites:
         response = requests.get(ccArea)
         soup = bs4.BeautifulSoup(response.text, "html.parser")
@@ -13,9 +14,15 @@ def HuntCCs():
         for cc in ccs:
             response = requests.get("https://commoncore.hku.hk/"+cc)
             soup = bs4.BeautifulSoup(response.text, "html.parser")
-            faculties = soup.find_all(string=lambda text: "faculty" in text.lower())[0]
-            faculties = faculties.replace("(", "").replace(")", "").replace("\n", "")
-            print(faculties)
+            faculties = soup.find_all(string=lambda text: "faculty" in text.lower())
+            if len(faculties) == 0:
+                faculties = soup.find_all(string=lambda text: "centre" in text.lower())
+                if len(faculties) == 0:
+                    print(f"Cannot find faculty for {cc}")
+            faculties = faculties[0].replace("(", "").replace(")", "").replace("\n", "")
+            data[cc] = faculties
+    return data
+            
 
 
 def main():
