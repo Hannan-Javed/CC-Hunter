@@ -14,7 +14,7 @@ def HuntCCs():
         for cc in ccs:
             response = requests.get("https://commoncore.hku.hk/"+cc)
             soup = bs4.BeautifulSoup(response.text, "html.parser")
-            faculties = soup.find_all(string=lambda text: "faculty" in text.lower())
+            faculties = [td.get_text(";", strip=True).partition(';')[2] for td in soup.find_all("td") if "faculty" in td.get_text(strip=True).lower()][0].replace(';','')
             if len(faculties) == 0:
                 faculties = soup.find_all(string=lambda text: "centre" in text.lower())
                 if len(faculties) == 0:
