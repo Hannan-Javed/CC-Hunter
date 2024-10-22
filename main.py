@@ -39,6 +39,12 @@ def saveData(data):
             file.write(f"{cc};{courseInfo}\n")
     print("Data saved to ccs.txt")
 
+def readData():
+    with open("ccs.txt", "r") as file:
+        data = file.read().splitlines()
+    return data
+
+
 def main():
     ccsInformation = HuntCCs()
     saveData(ccsInformation)
