@@ -23,7 +23,7 @@ def HuntCCs():
                     if len(faculties) == 0:
                         professor = [td.get_text(";", strip=True).partition(';')[0] for td in soup.find_all("td") if "centre" in td.get_text(strip=True).lower()]
                         faculties = [td.get_text(";", strip=True).partition(';')[2] for td in soup.find_all("td") if "centre" in td.get_text(strip=True).lower()]
-                    data[cc] = [faculties[0], professor[0].replace(';','')]
+                    data[cc] = [faculties[0].replace(';',''), professor[0]]
                 except requests.RequestException as e:
                     print(f"Error fetching details for {cc}: {e}")
                 except IndexError as e:
