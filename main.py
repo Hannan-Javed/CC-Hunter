@@ -38,10 +38,15 @@ def HuntCCs():
             print(f"Error fetching {ccArea}: {e}")
     return data
             
-
+def saveData(data):
+    with open("ccs.txt", "w") as file:
+        for cc, faculty in data.items():
+            file.write(f"{cc};{faculty}\n")
+    print("Data saved to ccs.txt")
 
 def main():
-    ccs = HuntCCs()
-    print(ccs)
+    ccsInformation = HuntCCs()
+    saveData(ccsInformation)
+    
 if __name__ == '__main__':
     main()
