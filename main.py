@@ -1,4 +1,4 @@
-import bs4
+import bs4, os
 import requests
 
 websites = ["https://commoncore.hku.hk/science-technology-and-big-data/", "https://commoncore.hku.hk/arts-and-humanities/", "https://commoncore.hku.hk/global-issues/", "https://commoncore.hku.hk/china-culture-state-and-society/"]
@@ -44,10 +44,23 @@ def readData():
         data = file.read().splitlines()
     return data
 
+def queryCCCourses(p, f):
+    data = readData()
+    for line in data:
+        cc, courseInfo = line.split(";")
+        if p.lower() in courseInfo.lower() and f.lower() in courseInfo.lower():
+            print(f"{cc} - {courseInfo.replace('')}")
 
 def main():
-    ccsInformation = HuntCCs()
-    saveData(ccsInformation)
+    if not 'ccs.txt' in os.listdir():
+        print("Data not found, fetching...")
+        ccsInformation = HuntCCs()
+        saveData(ccsInformation)
+    print("Which department's or professor's are you looking for? ")
+    professors = input("Professor: ")
+    faculties = input("Faculty: ")
+    queryCCCourses(professors, faculties)
+
 
 if __name__ == '__main__':
     main()
