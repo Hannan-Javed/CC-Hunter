@@ -18,21 +18,17 @@ def HuntCCs():
                     response = requests.get("https://commoncore.hku.hk/" + cc)
                     response.raise_for_status()
                     soup = bs4.BeautifulSoup(response.text, "html.parser")
-                    professor = [td.get_text(";", strip=True).partition(';')[0] for td in soup.find_all("td") if "faculty" in td.get_text(strip=True).lower()][0]
-                    faculties = [td.get_text(";", strip=True).partition(';')[2] for td in soup.find_all("td") if "faculty" in td.get_text(strip=True).lower()][0].replace(';', '')
-                    if len(professor) == 0:
-                        professor = soup.find_all(string=lambda text: "dr" in text.lower())
-                        if len(professor) == 0:
-                            print(f"Cannot find professor for {cc}")
+                    professor = [td.get_text(";", strip=True).partition(';')[0] for td in soup.find_all("td") if "faculty" in td.get_text(strip=True).lower()]
+                    faculties = [td.get_text(";", strip=True).partition(';')[2] for td in soup.find_all("td") if "faculty" in td.get_text(strip=True).lower()]
                     if len(faculties) == 0:
-                        faculties = soup.find_all(string=lambda text: "centre" in text.lower())
-                        if len(faculties) == 0:
-                            print(f"Cannot find faculty for {cc}")
-                    data[cc] = [faculties, professor]
+                        professor = [td.get_text(";", strip=True).partition(';')[0] for td in soup.find_all("td") if "centre" in td.get_text(strip=True).lower()]
+                        faculties = [td.get_text(";", strip=True).partition(';')[2] for td in soup.find_all("td") if "centre" in td.get_text(strip=True).lower()]
+                    data[cc] = [faculties[0], professor[0].replace(';','')]
                 except requests.RequestException as e:
                     print(f"Error fetching details for {cc}: {e}")
                 except IndexError as e:
                     print(f"Error parsing details for {cc}: {e}")
+                    
         except requests.RequestException as e:
             print(f"Error fetching {ccArea}: {e}")
     return data
