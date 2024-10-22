@@ -28,7 +28,6 @@ def HuntCCs():
                         faculties = soup.find_all(string=lambda text: "centre" in text.lower())
                         if len(faculties) == 0:
                             print(f"Cannot find faculty for {cc}")
-                    faculties = faculties[0].replace("(", "").replace(")", "").replace("\n", "")
                     data[cc] = [faculties, professor]
                 except requests.RequestException as e:
                     print(f"Error fetching details for {cc}: {e}")
@@ -40,13 +39,13 @@ def HuntCCs():
             
 def saveData(data):
     with open("ccs.txt", "w") as file:
-        for cc, faculty in data.items():
-            file.write(f"{cc};{faculty}\n")
+        for cc, courseInfo in data.items():
+            file.write(f"{cc};{courseInfo}\n")
     print("Data saved to ccs.txt")
 
 def main():
     ccsInformation = HuntCCs()
     saveData(ccsInformation)
-    
+
 if __name__ == '__main__':
     main()
