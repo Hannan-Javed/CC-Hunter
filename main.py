@@ -49,7 +49,7 @@ def queryCCCourses(p, f):
     for line in data:
         cc, courseInfo = line.split(";")
         if p.lower() in courseInfo.lower() and f.lower() in courseInfo.lower():
-            print(f"{cc} - {courseInfo.replace('')}")
+            print(f"{cc} - {courseInfo}")
 
 def main():
     if not 'ccs.txt' in os.listdir():
