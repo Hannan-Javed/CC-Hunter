@@ -1,4 +1,4 @@
-## Common Core Course Hunter
+# Common Core Course Hunter
 The Common Core Course Hunter is a web scraping tool designed to extract and search course information from HKU Common Core website. 
 
 ## Installation & Running
